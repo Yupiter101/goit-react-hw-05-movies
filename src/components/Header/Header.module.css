@@ -1,0 +1,22 @@
+
+
+.HeaderWrap {
+  background-color: #efefef;
+}
+
+.NavList {
+  
+  display: flex;
+  /* justify-content: flex-start; */
+  list-style: none;
+  padding-top: 14px;
+  padding-bottom: 18px;
+  margin-top: 0;
+}
+
+.NavList Li {
+  font-size: 26px;
+  font-weight: 600;
+  margin-left: 30px;
+
+}
