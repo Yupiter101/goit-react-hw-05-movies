@@ -20,16 +20,15 @@ function MovieDetalis() {
 
 
   const [movieInfo, setMovieInfo] = useState(null);
-  console.log(movieInfo);
+  // console.log(movieInfo);
  
 
   useEffect(() => {
     fetch(URL)
       .then(response => response.json())
       .then(data => {
-        // console.log(data);
         setMovieInfo(data)
-        // console.log(movieInfo);
+        console.log(data);
       })
       .catch(error => console.log(error));
   }, [URL])

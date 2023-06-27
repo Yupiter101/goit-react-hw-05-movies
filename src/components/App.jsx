@@ -9,6 +9,8 @@ import Movies from "pages/Movies";
 import MovieDetalis from "pages/MovieDetalis";
 import Layout from "./Layout/Layout";
 import { NotFaund } from "pages/NotFaund";
+import Cast from "./Cast/Cast";
+import Review from "./Review/Review";
 
 
 export const App = () => {
@@ -23,8 +25,8 @@ export const App = () => {
           <Route path="movies" element={<Movies />} />
 
           <Route path="movies/:movieId" element={<MovieDetalis />}>
-            <Route path="cast" element={<div>here cast</div>}/>
-            <Route path="review" element={<div>here review</div>}/>
+            <Route path="cast" element={<Cast></Cast>}/>
+            <Route path="review" element={<Review></Review>}/>
           </Route>
 
           <Route path="*" element={<NotFaund />} />
