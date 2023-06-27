@@ -1,0 +1,16 @@
+
+
+.DetalisWrap {
+  display: flex;
+  margin-top: 20px;
+  
+}
+
+.DescrMovieWrap {
+  padding: 20px 30px;
+
+}
+
+.ImgWrap {
+  min-width: 300px;
+}

@@ -1,15 +1,17 @@
-import { NavLink } from "react-router-dom";
-import css from "./Header.module.css";
+
+import { Outlet, NavLink } from "react-router-dom";
+import css from "./Layout.module.css";
 
 
-function Header() {
+function Layout() {
 
   const LinkActive = ({isActive}) => {
     return {color: isActive ? "red" : "green"}
   }
 
+
   return (
-    <>
+    <div>
       <header className={css.HeaderWrap}>
         <nav>
           <ul className={css.NavList}>
@@ -18,8 +20,9 @@ function Header() {
           </ul>
         </nav>
       </header>
-    </>
+      <Outlet />
+    </div>
   );
 }
 
-export default Header;
+export default Layout;

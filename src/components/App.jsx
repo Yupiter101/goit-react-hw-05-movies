@@ -1,21 +1,34 @@
+// </React.StrictMode> - false!!!!
 
+// import css from "../components/Header/Header.module.css";
 import { Routes, Route } from "react-router-dom";
 
-import Header from "./Header/Header";
+// import Header from "./Header/Header";
 import Home from "pages/Home";
 import Movies from "pages/Movies";
+import MovieDetalis from "pages/MovieDetalis";
+import Layout from "./Layout/Layout";
+import { NotFaund } from "pages/NotFaund";
 
 
 export const App = () => {
 
   
   return (
-    <div>
-      <Header></Header>
-
+    <div className="main-container">
+     
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/movies" element={<Movies />} />
+        <Route path="/" element={<Layout />} >
+          <Route index element={<Home />} />
+          <Route path="movies" element={<Movies />} />
+
+          <Route path="movies/:movieId" element={<MovieDetalis />}>
+            <Route path="cast" element={<div>here cast</div>}/>
+            <Route path="review" element={<div>here review</div>}/>
+          </Route>
+
+          <Route path="*" element={<NotFaund />} />
+        </Route>
       </Routes>
     </div>
   );

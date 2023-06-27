@@ -1,32 +1,33 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 // const arrs = ['mov-1', 'mov-2', 'mov-3', 'mov-4', 'mov-5', 'mov-6'];
-// List all
-const baseURL  = 'https://api.themoviedb.org/3/trending/all/day?api_key=7e2311f4f0ec2e3fb8119bae191edcda';
+
 
 
 function Home() {
   const [movies, setMovies] = useState([]);
-  // const [test, setTest] = useState(0);
 
-  const isFirstRender = useRef(true);
+
+  // List all
+  const baseURL  = 'https://api.themoviedb.org/3/trending/all/day?api_key=7e2311f4f0ec2e3fb8119bae191edcda';
+
+
+  // const isFirstRender = useRef(true);
   
   useEffect(() => {
-    if(isFirstRender.current) {
-      isFirstRender.current = false;
-      console.log('Пропуск 1');
-      return
-    }
-    
+    // if(isFirstRender.current) {
+    //   isFirstRender.current = false;
+    //   console.log('Пропуск 1');
+    //   return
+    // }
     fetch(baseURL)
       .then(response => response.json() )
       .then(({results}) => {
-        console.log(results);
+        // console.log(results);
         setMovies(results);
       })
       .catch(error => console.log(error))
-
   }, []);
 
 
@@ -34,7 +35,11 @@ function Home() {
     <div>
       <h2>Trending today</h2>
       <ul>
-        {movies.map( movie => <li key={`id-${movie.id}`}><Link>{movie.title || movie.name}</Link></li> )}
+        {movies.map( movie => <li 
+          key={`id-${movie.id}`}>
+            <Link 
+              to={`movies/${movie.id}`}>{movie.id} {movie.title || movie.name}
+            </Link></li> )}
       </ul>
     </div>
   );

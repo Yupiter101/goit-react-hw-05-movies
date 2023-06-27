@@ -1,13 +1,15 @@
 
+import { SearchBar } from "components/Searchbar/Searchbar";
 
 
 function Movies() {
   return (
     <div>
-      <label>
+      <SearchBar></SearchBar>
+      {/* <label>
         Search
         <input name="search" />
-      </label>
+      </label> */}
 
     </div>
 
