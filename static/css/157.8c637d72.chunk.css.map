@@ -1,0 +1,1 @@
+{"version":3,"file":"static/css/157.8c637d72.chunk.css","mappings":"AAEA,6BACE,YAAa,CACb,eAEF,CAEA,gCACE,iBAEF,CAEA,yBACE,eACF","sources":["pages/MovieDet.module.css"],"sourcesContent":["\n\n.DetalisWrap {\n  display: flex;\n  margin-top: 20px;\n  \n}\n\n.DescrMovieWrap {\n  padding: 20px 30px;\n\n}\n\n.ImgWrap {\n  min-width: 300px;\n}"],"names":[],"sourceRoot":""}
