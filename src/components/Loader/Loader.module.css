@@ -1,0 +1,8 @@
+
+
+.LoaderWrap {
+  position: fixed;
+  top: 30%;
+  left: 45%;
+  transform: translate(-50%, -50%);
+}

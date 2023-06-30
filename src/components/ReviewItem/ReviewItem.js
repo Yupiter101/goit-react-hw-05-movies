@@ -1,7 +1,7 @@
 
 
 
-export function ReviewItem({author, content, idx}) {
+export function ReviewItem({ author, content }) {
 
   return (
     <>

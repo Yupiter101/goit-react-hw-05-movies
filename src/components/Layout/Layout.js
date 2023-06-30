@@ -1,6 +1,9 @@
-
+import { Suspense } from "react";
 import { Outlet, NavLink } from "react-router-dom";
+// import { Loader } from "components/Loader/Loader";
+import { LoaderSerch } from "components/Loader/LoaderSearch";
 import css from "./Layout.module.css";
+
 
 
 function Layout() {
@@ -12,7 +15,7 @@ function Layout() {
 
   return (
     <div>
-      <header className={css.HeaderWrap}>
+      <header>
         <nav>
           <ul className={css.NavList}>
             <li><NavLink style={LinkActive} to="/">Home</NavLink></li>
@@ -20,7 +23,10 @@ function Layout() {
           </ul>
         </nav>
       </header>
-      <Outlet />
+      <Suspense fallback={<LoaderSerch />}>
+        <Outlet />
+      </Suspense>
+      
     </div>
   );
 }

@@ -1,80 +1,51 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-
-// const arrs = ['mov-1', 'mov-2', 'mov-3', 'mov-4', 'mov-5', 'mov-6'];
-
+import Api from "services/moviesApi";
+import MoviesList from "components/MoviesList/MoviesList";
+import { Loader } from "components/Loader/Loader";
 
 
 function Home() {
+
   const [movies, setMovies] = useState([]);
+  const URLAllMovies = '/trending/all/day?';
+  const [isLoading, setIsLoading ] = useState(false);
 
 
-  // List all
-  const baseURL  = 'https://api.themoviedb.org/3/trending/all/day?api_key=7e2311f4f0ec2e3fb8119bae191edcda';
 
-
-  // const isFirstRender = useRef(true);
-  
   useEffect(() => {
-    // if(isFirstRender.current) {
-    //   isFirstRender.current = false;
-    //   console.log('Пропуск 1');
-    //   return
-    // }
-    fetch(baseURL)
-      .then(response => response.json() )
-      .then(({results}) => {
-        // console.log(results);
-        setMovies(results);
-      })
-      .catch(error => console.log(error))
+    fetchMovieList(URLAllMovies);
   }, []);
+
+
+
+  function fetchMovieList(params) {
+    setIsLoading(true);
+    Api.getMovieData(params)
+    .then(({results}) => setMovies(results))
+    .catch(error => console.log(error))
+    .finally(()=> setIsLoading(false));
+  }
 
 
   return (
     <div>
       <h2>Trending today</h2>
-      <ul>
-        {movies.map( movie => <li 
-          key={`id-${movie.id}`}>
-            <Link 
-              to={`movies/${movie.id}`}>{movie.id} {movie.title || movie.name}
-            </Link></li> )}
+      {isLoading ? <Loader/> : (
+        <ul>
+        {movies.map( movie => <MoviesList 
+            key={`id-${movie.id}`} 
+            movieId={movie.id}
+            movieTitle={movie.title || movie.name}
+          /> )}
       </ul>
+      )}
+      
     </div>
   );
 }
 
 export default Home;
 
-
-
-// const myURL = 'https://api.themoviedb.org/3/movie/550?api_key=7e2311f4f0ec2e3fb8119bae191edcda';
-// const baseURL  = 'https://api.themoviedb.org/3/search/movie?query=Jack+Reacher&api_key=7e2311f4f0ec2e3fb8119bae191edcda';
-// const baseURL  = 'https://api.themoviedb.org/3/  search/movie?query=Jack+Reacher&api_key=7e2311f4f0ec2e3fb8119bae191edcda';
-
-// List all
-// const baseURL  = 'https://api.themoviedb.org/3/trending/all/day?api_key=7e2311f4f0ec2e3fb8119bae191edcda';
-
-// Search
-// const baseURL  = 'https://api.themoviedb.org/3/search/movie?query=Jack+Reacher&api_key=7e2311f4f0ec2e3fb8119bae191edcda';
-
-// movie/${id}
-// const baseURL  = 'https://api.themoviedb.org/3/movie/75780?api_key=7e2311f4f0ec2e3fb8119bae191edcda';
-
-// movie/${id}/credits
-// const baseURL  = 'https://api.themoviedb.org/3/movie/75780/credits?api_key=7e2311f4f0ec2e3fb8119bae191edcda';
-
-// movie/${id}/reviews
-// const baseURL  = 'https://api.themoviedb.org/3/movie/75780/reviews?api_key=7e2311f4f0ec2e3fb8119bae191edcda';
-
-// poster_path: "/uQBbjrLVsUibWxNDGA4Czzo8lwz.jpg"
-// https://image.tmdb.org/t/p/w300/qtafXiYDUMKxzsssU41qWey5oiT.jpg
-// https://image.tmdb.org/t/p/w300/uQBbjrLVsUibWxNDGA4Czzo8lwz.jpg
-
-// https://api.themoviedb.org/3/
-// trending/all/day?
-// `search/movie?query=${query}`
-// `movie/${id}?`
-// `movie/${id}/credits?`
-// `movie/${id}/reviews?`
+// 114472 noImg
+// 125988 error
+// 335977 есть view

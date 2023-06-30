@@ -3,38 +3,50 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { CastItem } from "components/CastItem/CastItem";
 import css from './Cast.module.css';
+import Api from "services/moviesApi";
+import { Loader } from "components/Loader/Loader";
 
-
-// movie/${id}/credits
-// const baseURL  = 'https://api.themoviedb.org/3/movie/75780/credits?api_key=7e2311f4f0ec2e3fb8119bae191edcda'
 
 function Cast() {
 
-  const baseURL  = 'https://api.themoviedb.org/3';
-  const API_KEY = '?api_key=7e2311f4f0ec2e3fb8119bae191edcda';
   const params = useParams();
-  const URLCast = baseURL +'/movie/'+ params.movieId + '/credits' + API_KEY;
- 
+  const URLMovieCast = '/movie/'+ params.movieId + '/credits?';
+  const [castes, setCastes] = useState([]);
+  const [isLoading, setIsLoading ] = useState(false);
+  const [isEmpty, setisEmpty ] = useState(false);
 
-  const [castes, setCastes] = useState([])
-
-  console.log(castes);
-
-
-
+  
   useEffect(()=>{
-    console.log(444);
-    fetch(URLCast)
-      .then(resp => resp.json())
+    fetchMovieCast(URLMovieCast);
+  },[URLMovieCast]);
+
+
+  function fetchMovieCast(URLparams) {
+    setIsLoading(true);
+    Api.getMovieData(URLparams)
       .then(data => {
+        if(!data.cast.length) {
+          setisEmpty(true);
+        }
         setCastes(data.cast);
       })
-      .catch(error => console.log(error));
-  },[URLCast]);
+      .catch(error => console.log(error))
+      .finally(()=> setIsLoading(false));
+  }
 
+
+
+  if(isLoading) {
+    return <Loader/>;
+  }
+
+
+  if(isEmpty) {
+    return <p>Cast of this movie is empty</p>;
+  }
 
   if(!castes.length) {
-    return <p>Cast of this movie is empty</p>;
+    return 
   }
 
   return (
@@ -52,35 +64,3 @@ function Cast() {
 }
 
 export default Cast;
-
-
-// character
-// : 
-// "Seiya"
-// credit_id
-// : 
-// "5907403b92514169d803029b"
-// gender
-// : 
-// 2
-// id
-// : 
-// 1566805
-// known_for_department
-// : 
-// "Acting"
-// name
-// : 
-// "Mackenyu"
-// order
-// : 
-// 0
-// original_name
-// : 
-// "Mackenyu"
-// popularity
-// : 
-// 18.583
-// profile_path
-// : 
-// "/amnbjSvI19ZfxkZNj8WOa9tr7yu.jpg"

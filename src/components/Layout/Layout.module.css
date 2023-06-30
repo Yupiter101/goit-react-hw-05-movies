@@ -1,13 +1,6 @@
 
 
-
-
-.HeaderWrap {
-  background-color: #efefef;
-}
-
 .NavList {
-  
   display: flex;
   /* justify-content: flex-start; */
   list-style: none;

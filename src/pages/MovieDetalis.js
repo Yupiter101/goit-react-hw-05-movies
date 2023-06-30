@@ -1,51 +1,75 @@
-import { Link, Outlet, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { Link, Outlet, useParams, useLocation } from "react-router-dom";
+import { useState, useEffect, useRef, Suspense } from "react";
 
 import css from "./MovieDet.module.css";
-
+import Api from "services/moviesApi";
+import noPoster from '../img/no-poster.jpg';
+import { Loader } from "components/Loader/Loader";
+import { LoaderSerch } from "components/Loader/LoaderSearch";
 
 
 
 function MovieDetalis() {
 
-  // movie/${id}
-  const baseURL  = 'https://api.themoviedb.org/3';
-  const API_KEY = '?api_key=7e2311f4f0ec2e3fb8119bae191edcda';
-  // const baseURL  = 'https://api.themoviedb.org/3/movie/75780?api_key=7e2311f4f0ec2e3fb8119bae191edcda';
   const baseURLImg = 'https://image.tmdb.org/t/p/w300/';
-  
   const params = useParams();
-  const URL = baseURL+"/movie/"+ params.movieId + API_KEY;
-  
-
+  const URLMovieDetali = '/movie/' + params.movieId + '?';
 
   const [movieInfo, setMovieInfo] = useState(null);
-  // console.log(movieInfo);
- 
+  const [isLoading, setIsLoading ] = useState(false);
+  const [isError, setIsError ] = useState(false);
+
+  const location = useLocation();
+  const locationRef = useRef(location.state?.from ?? '/');
+  
+
 
   useEffect(() => {
-    fetch(URL)
-      .then(response => response.json())
-      .then(data => {
-        setMovieInfo(data)
-        console.log(data);
-      })
-      .catch(error => console.log(error));
-  }, [URL])
+    fetchMovieDetalis(URLMovieDetali);
+  }, [URLMovieDetali])
 
+
+  function fetchMovieDetalis(params) {
+    setIsLoading(true);
+    setIsError(false);
+    Api.getMovieData(params)
+      .then(data => {
+        setMovieInfo(data);
+      })
+      .catch(error => {
+        console.log(error);
+        setIsError(true);
+      })
+      .finally(()=> setIsLoading(false));
+  }
+
+  // 114472 noImg
+  // 125988 error
+  // 335977 есть view
+
+
+  if(isLoading) {
+    return <Loader/>
+  }
+
+  if(isError) {
+    return <h3>Нет информации по фильму с ID: {params.movieId}</h3>
+  }
 
   if(!movieInfo) {
-    return
+    return 
   }
 
   return (
     <div>
-      <button type="button"><Link to="/">go back</Link></button>
-      
+      <Link to={locationRef.current}>go back</Link>
       <div className={css.DetalisWrap}>
-
           <div className={css.ImgWrap}>
-            <img src={`${baseURLImg}${movieInfo.poster_path}`} alt={movieInfo.title || movieInfo.name} />
+            <img 
+              // src={`${baseURLImg}${movieInfo.poster_path}`} 
+              src={movieInfo.poster_path ? `${baseURLImg}${movieInfo.poster_path}` : noPoster} 
+              alt={movieInfo.title || movieInfo.name} 
+            />
           </div>
           
           <div className={css.DescrMovieWrap}>
@@ -66,7 +90,10 @@ function MovieDetalis() {
         <li><Link to="cast">Cast</Link></li>
         <li><Link to="review">Review</Link></li>
       </ul>
-      <Outlet />
+      <Suspense fallback={<LoaderSerch/>}>
+        <Outlet />
+      </Suspense>
+      
     </div>
   );
 }
