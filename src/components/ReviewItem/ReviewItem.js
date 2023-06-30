@@ -1,4 +1,4 @@
-
+import PropTypes from 'prop-types';
 
 
 export function ReviewItem({ author, content }) {
@@ -13,3 +13,9 @@ export function ReviewItem({ author, content }) {
   );
 
 }
+
+// import PropTypes from 'prop-types';
+ReviewItem.propType = {
+  author: PropTypes.string,
+  content: PropTypes.string
+};

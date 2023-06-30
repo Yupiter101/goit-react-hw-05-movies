@@ -1,4 +1,4 @@
-
+import PropTypes from 'prop-types';
 import noImg from '../../img/no_Img_min.png';
 
 
@@ -26,3 +26,9 @@ export function CastItem({character, name, profile_path}) {
   );
 
 }
+
+CastItem.propType = {
+  character: PropTypes.string,
+  name: PropTypes.string,
+  profile_path: PropTypes.string
+};
