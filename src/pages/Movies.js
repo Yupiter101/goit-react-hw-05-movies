@@ -20,27 +20,25 @@ function Movies() {
     if(!queryMovie || queryMovie === '') {
       return
     }
-    const URLMovieSearch = '/search/movie?query=' + queryMovie + '&';
-    fetchMovieSearch(URLMovieSearch);
+
+    function fetchMovieSearch(URLsearch) {
+      setIsLoading(true);
+      setNoMovies(false);
+      Api.getSearchMovies(URLsearch)
+      .then(data => {
+        if(!data.results.length) {
+          setNoMovies(true);
+          console.log('Нет фильмов с таким именем');
+          return
+        }
+        setMovies(data.results);
+      })
+      .catch(error => console.log(error))
+      .finally(()=> setIsLoading(false));
+    }
+
+    fetchMovieSearch(queryMovie);
   },[queryMovie]);
-
-
-  function fetchMovieSearch(URLparams) {
-    setIsLoading(true);
-    setNoMovies(false);
-    Api.getMovieData(URLparams)
-    .then(data => {
-      if(!data.results.length) {
-        setNoMovies(true);
-        console.log('Нет фильмов с таким именем');
-        return
-      }
-      setMovies(data.results);
-    })
-    .catch(error => console.log(error))
-    .finally(()=> setIsLoading(false));
-  }
-
 
 
   function querySubmit(search) {
@@ -65,16 +63,10 @@ function Movies() {
   return (
     <div>
       <SearchBar onSubmit={querySubmit}></SearchBar>
-      {isLoading ? <Loader/> : (
-        <ul>
-        {movies.map( movie => <MoviesList 
-            key={`id-${movie.id}`} 
-            movieId={movie.id}
-            movieTitle={movie.title || movie.name}
-            isQueryName={queryMovie ? true : false}
-          /> )}
-      </ul>
-      )}   
+      {isLoading ? <Loader/> :  (<MoviesList 
+          movies={movies} 
+          isQueryName={queryMovie ? true : false}
+      />)}   
     </div>
   );
 }

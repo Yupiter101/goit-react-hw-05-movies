@@ -11,9 +11,10 @@ import { LoaderSerch } from "components/Loader/LoaderSearch";
 
 function MovieDetalis() {
 
+
   const baseURLImg = 'https://image.tmdb.org/t/p/w300/';
   const params = useParams();
-  const URLMovieDetali = '/movie/' + params.movieId + '?';
+  const URLMovieId = params.movieId;
 
   const [movieInfo, setMovieInfo] = useState(null);
   const [isLoading, setIsLoading ] = useState(false);
@@ -25,23 +26,25 @@ function MovieDetalis() {
 
 
   useEffect(() => {
-    fetchMovieDetalis(URLMovieDetali);
-  }, [URLMovieDetali])
 
+    function fetchMovieDetalis(movieId) {
+      setIsLoading(true);
+      setIsError(false);
+      Api.getMovieDetalis(movieId)
+        .then(data => {
+          setMovieInfo(data);
+        })
+        .catch(error => {
+          console.log(error);
+          setIsError(true);
+        })
+        .finally(()=> setIsLoading(false));
+    }
 
-  function fetchMovieDetalis(params) {
-    setIsLoading(true);
-    setIsError(false);
-    Api.getMovieData(params)
-      .then(data => {
-        setMovieInfo(data);
-      })
-      .catch(error => {
-        console.log(error);
-        setIsError(true);
-      })
-      .finally(()=> setIsLoading(false));
-  }
+    fetchMovieDetalis(URLMovieId);
+  }, [URLMovieId])
+
+  
 
   // 114472 noImg
   // 125988 error

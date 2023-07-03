@@ -2,8 +2,10 @@
 const baseURL  = 'https://api.themoviedb.org/3';
 const API_KEY = 'api_key=7e2311f4f0ec2e3fb8119bae191edcda';
 
-function getMovieData(params) {
-  const URL = baseURL + params + API_KEY;
+
+function getAllMovies() {
+  const URLAllMovies = '/trending/all/day?';
+  const URL = baseURL + URLAllMovies + API_KEY;
   return fetch(URL).then(response => {
     if(!response.ok) {
       throw new Error('Поймали ошибку API');
@@ -12,11 +14,50 @@ function getMovieData(params) {
   });
 }
 
+
+function getMovieDetalis(movieId) {
+  const URL = `${baseURL}/movie/${movieId}?${API_KEY}`;
+  return fetch(URL).then(response => {
+    if(!response.ok) {
+      throw new Error('Поймали ошибку API');
+    }
+    return response.json();
+  });
+}
+
+function getSearchMovies(searchName) {
+  const URL = `${baseURL}/search/movie?query=${searchName}&${API_KEY}`;
+  return fetch(URL).then(response => {
+    if(!response.ok) {
+      throw new Error('Поймали ошибку API');
+    }
+    return response.json();
+  });
+}
+
+function getSubDetalis(moveId, subName) {
+  const URL = `${baseURL}/movie/${moveId}/${subName}?${API_KEY}`;
+  return fetch(URL).then(response => {
+    if(!response.ok) {
+      throw new Error('Поймали ошибку API');
+    }
+    return response.json();
+  });
+}
+
+
 const Api = {
-  getMovieData
+  // getMovieData,
+  getAllMovies,
+  getMovieDetalis,
+  getSearchMovies,
+  getSubDetalis,
 };
 
 export default Api;
+
+
+
 
 
 

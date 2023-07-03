@@ -7,39 +7,28 @@ import { Loader } from "components/Loader/Loader";
 function Home() {
 
   const [movies, setMovies] = useState([]);
-  const URLAllMovies = '/trending/all/day?';
   const [isLoading, setIsLoading ] = useState(false);
 
-
-
   useEffect(() => {
-    fetchMovieList(URLAllMovies);
+    function fetchMovieList() {
+      setIsLoading(true);
+      Api.getAllMovies()
+      .then(({results}) => setMovies(results))
+      .catch(error => console.log(error))
+      .finally(()=> setIsLoading(false));
+    }
+    
+    fetchMovieList();
   }, []);
-
-
-
-  function fetchMovieList(params) {
-    setIsLoading(true);
-    Api.getMovieData(params)
-    .then(({results}) => setMovies(results))
-    .catch(error => console.log(error))
-    .finally(()=> setIsLoading(false));
-  }
 
 
   return (
     <div>
       <h2>Trending today</h2>
-      {isLoading ? <Loader/> : (
-        <ul>
-        {movies.map( movie => <MoviesList 
-            key={`id-${movie.id}`} 
-            movieId={movie.id}
-            movieTitle={movie.title || movie.name}
-          /> )}
-      </ul>
-      )}
-      
+      {isLoading ? <Loader/> : (<MoviesList
+          movies={movies}
+          isQueryName={false}
+        />)}
     </div>
   );
 }

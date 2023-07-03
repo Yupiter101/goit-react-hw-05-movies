@@ -1,6 +1,7 @@
 // </React.StrictMode> - false!!!!
 import { lazy } from "react";
 import { Routes, Route } from "react-router-dom";
+// import { Navigate } from "react-router-dom";
 
 // import Home from "pages/Home";
 // import Movies from "pages/Movies";
@@ -35,6 +36,7 @@ export const App = () => {
           </Route>
 
           <Route path="*" element={<NotFaund />} />
+          {/* <Route path="*" element={<Navigate to="/" replace />}/> */}
         </Route>
       </Routes>
     </div>

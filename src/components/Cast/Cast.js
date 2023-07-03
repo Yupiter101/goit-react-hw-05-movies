@@ -10,29 +10,27 @@ import { Loader } from "components/Loader/Loader";
 function Cast() {
 
   const params = useParams();
-  const URLMovieCast = '/movie/'+ params.movieId + '/credits?';
   const [castes, setCastes] = useState([]);
   const [isLoading, setIsLoading ] = useState(false);
   const [isEmpty, setisEmpty ] = useState(false);
 
   
   useEffect(()=>{
-    fetchMovieCast(URLMovieCast);
-  },[URLMovieCast]);
+    function fetchMovieCast(URL_Id, subName) {
+      setIsLoading(true);
+      Api.getSubDetalis(URL_Id, subName)
+        .then(data => {
+          if(!data.cast.length) {
+            setisEmpty(true);
+          }
+          setCastes(data.cast);
+        })
+        .catch(error => console.log(error))
+        .finally(()=> setIsLoading(false));
+    }
 
-
-  function fetchMovieCast(URLparams) {
-    setIsLoading(true);
-    Api.getMovieData(URLparams)
-      .then(data => {
-        if(!data.cast.length) {
-          setisEmpty(true);
-        }
-        setCastes(data.cast);
-      })
-      .catch(error => console.log(error))
-      .finally(()=> setIsLoading(false));
-  }
+    fetchMovieCast(params.movieId, 'credits');
+  },[params.movieId]);
 
 
 

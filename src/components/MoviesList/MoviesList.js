@@ -4,29 +4,37 @@ import { Link } from "react-router-dom";
 import css from "./MoviesList.module.css";
 
 
-function MoviesList({ movieId, movieTitle, isQueryName }) {
-
+function MoviesList({ movies, isQueryName }) {
   const location = useLocation();
-
   return (
     <>
-      <li className={css.MovieListItem}>
-        <Link 
-          to={isQueryName ? `${movieId}` : `movies/${movieId}`} 
-          state={{ from: location }}
-          className={css.MovieListLink}
-        >
-          {movieId} {movieTitle}</Link>
-      </li>
+      <ul>
+         {movies.map( movie => <li key={`id-${movie.id}`} className={css.MovieListItem}>
+          <Link 
+            to={isQueryName ? `${movie.id}` : `movies/${movie.id}`} 
+            state={{ from: location }}
+            className={css.MovieListLink}
+          >
+            {movie.title || movie.name}</Link>
+         </li> 
+         )}
+      </ul>
     </>
   );
 }
 
+
+
+
+
 export default MoviesList;
 
-// import PropTypes from 'prop-types';
 MoviesList.propType = {
-  movieId: PropTypes.string,
-  movieTitle: PropTypes.string,
-  isQueryName: PropTypes.string
+    isQueryName: PropTypes.bool,
+    movies: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string,
+      title: PropTypes.string,
+    }).isRequired,
+  ).isRequired,
 };

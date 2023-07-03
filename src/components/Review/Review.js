@@ -9,30 +9,31 @@ import { Loader } from "components/Loader/Loader";
 function Review() {
 
   const params = useParams();
-  const URLMovieReview = '/movie/'+ params.movieId + '/reviews?';
   const [reviews, setReviews] = useState([]);
   const [isLoading, setIsLoading ] = useState(false);
   const [isEmpty, setisEmpty ] = useState(false);
 
 
   useEffect(()=>{
-    fetchMovieReview(URLMovieReview);
-  },[URLMovieReview]);
+    function fetchMovieReview(URL_Id, subName) {
+      setIsLoading(true);
+      setisEmpty(false);
+      Api.getSubDetalis(URL_Id, subName)
+        .then(view => {
+          if(!view.results.length) {
+            setisEmpty(true);
+          }
+          setReviews(view.results);
+        })
+        .catch(error => console.log(error))
+        .finally(()=> setIsLoading(false));
+    }
+
+    fetchMovieReview(params.movieId, 'reviews');
+  },[params.movieId]);
 
 
-  function fetchMovieReview(URLparams) {
-    setIsLoading(true);
-    setisEmpty(false);
-    Api.getMovieData(URLparams)
-      .then(view => {
-        if(!view.results.length) {
-          setisEmpty(true);
-        }
-        setReviews(view.results);
-      })
-      .catch(error => console.log(error))
-      .finally(()=> setIsLoading(false));
-  }
+  
 
  
   if(isLoading) {
